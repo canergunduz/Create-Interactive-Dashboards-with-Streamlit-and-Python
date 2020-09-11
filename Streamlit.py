@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import plotly_express as px
+from wordcloud import WordCloud, STOPWORDS
+import matplotlib.pyplot as plt
 
 st.title("Sentiment Analysis of Tweets about Airlines")
 st.sidebar.title("bidibidi")
@@ -23,11 +26,6 @@ random_tweet = st.sidebar.radio('Sentiment', ('positive','negative','neutral'))
 st.sidebar.markdown(data.query('airline_sentiment == @random_tweet')[["text"]].sample(n=1).iat[0,0])
 
 
-st.sidebar.selectbox('Viz type', ['Histogram', 'Pie chart'], key =1)
-sentiment_count = data['airline_sentiment'].value_counts()
-sentiment_count = pd.DataFrame({'Sentiment': sentiment_count.index, 'Tweets': sentiment_count.values})
-
-
 select = st.sidebar.selectbox('Viz type', ['Histogram', 'Pie chart'], key ='1')
 sentiment_count = data['airline_sentiment'].value_counts()
 sentiment_count = pd.DataFrame({'Sentiment': sentiment_count.index, 'Tweets': sentiment_count.values})
@@ -40,7 +38,6 @@ if not st.sidebar.checkbox("Hide", True):
     else:
         fig = px.pie(sentiment_count, names= 'Sentiment', values = 'Tweets', height=500)
         st.plotly_chart(fig)
-
 
 
 st.sidebar.subheader("When and Where tweets from")
